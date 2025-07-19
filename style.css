@@ -1,0 +1,371 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #2c3e50; /* สีกรมท่าเข้ม */
+    color: #ecf0f1; /* สีขาวอมเทา */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    width: 100%;
+    max-width: 900px;
+    background-color: #34495e; /* สีกรมท่าอ่อน */
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #e67e22; /* สีส้ม */
+    margin: 0;
+    font-size: 2em;
+}
+
+#player-info {
+    font-size: 1.1em;
+}
+
+#game-container {
+    background-color: #34495e; /* สีกรมท่าอ่อน */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game-screen {
+    display: none; /* ซ่อนทุกหน้าจอเริ่มต้น */
+}
+
+.game-screen.active {
+    display: block; /* แสดงเฉพาะหน้าจอที่ active */
+}
+
+h2 {
+    color: #3498db; /* สีฟ้า */
+    margin-top: 0;
+    font-size: 1.8em;
+}
+
+p {
+    line-height: 1.6;
+}
+
+button {
+    background-color: #2ecc71; /* สีเขียว */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 10px 5px;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background-color: #27ae60; /* สีเขียวเข้มขึ้น */
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+.game-area {
+    margin: 25px 0;
+    background-color: #2c3e50;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#text-to-type-container, #practice-text-to-type-container {
+    background-color: #1a242f; /* สีดำอมน้ำเงินเข้ม */
+    padding: 20px;
+    border-radius: 5px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    word-wrap: break-word; /* ให้ข้อความขึ้นบรรทัดใหม่ได้ */
+    overflow-wrap: break-word;
+}
+
+#text-to-type, #practice-text-to-type {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.2em;
+    color: #f1c40f; /* สีเหลือง */
+    white-space: pre-wrap; /* รักษารูปแบบช่องว่างและขึ้นบรรทัดใหม่ */
+}
+
+#user-input, #practice-user-input {
+    width: calc(100% - 40px);
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    font-size: 1.4em;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#user-input:focus, #practice-user-input:focus {
+    border-color: #e67e22;
+}
+
+#feedback-message, #practice-feedback-message {
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    min-height: 25px; /* กันการขยับของ layout */
+}
+
+#timer, #score, #accuracy, #practice-score, #practice-mistakes {
+    font-size: 1.2em;
+    margin-top: 10px;
+    color: #bdc3c7;
+}
+
+/* Virtual Keyboard Styles */
+#virtual-keyboard-container {
+    background-color: #2c3e50;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    display: grid;
+    gap: 5px; /* ระยะห่างระหว่างปุ่ม */
+    grid-template-areas:
+        "esc f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12 prtsc scrolllk pausebrk"
+        "grave one two three four five six seven eight nine zero minus equals backspace"
+        "tab q w e r t y u i o p lbracket rbracket backslash"
+        "capslock a s d f g h j k l semicolon quote enter"
+        "lshift z x c v b n m comma dot slash rshift"
+        "lctrl lwin lalt space ralt rwin menu rctrl"
+    ;
+    justify-content: center; /* จัดให้อยู่ตรงกลาง */
+    flex-wrap: wrap; /* ให้ขึ้นบรรทัดใหม่ได้ถ้าหน้าจอเล็ก */
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.key {
+    background-color: #7f8c8d; /* สีกดปุ่ม */
+    color: #ecf0f1;
+    border: 1px solid #95a5a6;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin: 2px;
+    font-size: 0.9em;
+    min-width: 30px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none; /* กันการเลือกข้อความ */
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.1s ease, transform 0.05s ease;
+}
+
+.key.highlight {
+    background-color: #e67e22; /* สีไฮไลต์ปุ่ม */
+    box-shadow: 0 0 8px #e67e22;
+    transform: scale(1.05);
+}
+
+.key.pressed {
+    background-color: #2ecc71; /* สีปุ่มเมื่อกด */
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific key widths for better layout */
+.key.backspace { grid-area: backspace; width: 80px; }
+.key.tab { grid-area: tab; width: 60px; }
+.key.capslock { grid-area: capslock; width: 75px; }
+.key.enter { grid-area: enter; width: 85px; }
+.key.lshift { grid-area: lshift; width: 90px; }
+.key.rshift { grid-area: rshift; width: 90px; }
+.key.lctrl { grid-area: lctrl; width: 60px; }
+.key.lwin { grid-area: lwin; width: 50px; }
+.key.lalt { grid-area: lalt; width: 50px; }
+.key.space { grid-area: space; width: 250px; }
+.key.ralt { grid-area: ralt; width: 50px; }
+.key.rwin { grid-area: rwin; width: 50px; }
+.key.menu { grid-area: menu; width: 50px; }
+.key.rctrl { grid-area: rctrl; width: 60px; }
+
+
+/* Level selection buttons */
+#level-selection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.level-button {
+    background-color: #3498db;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.level-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px);
+}
+
+.level-button.locked {
+    background-color: #7f8c8d;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.level-button.completed {
+    background-color: #2ecc71;
+}
+
+.level-button.locked:hover {
+    background-color: #7f8c8d; /* ไม่เปลี่ยนสีเมื่อ hover ถ้าล็อกอยู่ */
+    transform: none;
+}
+
+.level-button .stars {
+    font-size: 0.7em;
+    color: #f1c40f; /* สีดาว */
+    margin-top: 5px;
+}
+
+/* Result Screen */
+#result-screen {
+    background-color: #2c3e50;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+#star-rating {
+    font-size: 3em;
+    color: #f1c40f; /* สีดาว */
+    margin: 20px 0;
+}
+
+.star {
+    opacity: 0.3; /* เริ่มต้นดาวไม่สว่าง */
+}
+
+.star.active {
+    opacity: 1; /* ดาวที่ได้รับจะสว่าง */
+}
+
+footer {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    margin-top: 20px;
+    padding: 15px;
+    color: #bdc3c7;
+    font-size: 0.9em;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    header, #game-container, footer {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.6em;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+
+    #user-input, #practice-user-input {
+        font-size: 1.2em;
+    }
+
+    #text-to-type, #practice-text-to-type {
+        font-size: 1.8em;
+    }
+
+    #virtual-keyboard-container {
+        grid-template-areas: none; /* ยกเลิก grid areas บนจอเล็ก */
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .key {
+        padding: 8px 10px;
+        min-width: 25px;
+        min-height: 25px;
+        font-size: 0.8em;
+        /* รีเซ็ตความกว้างเฉพาะที่กำหนดไว้ใน media query */
+        width: auto !important; /* !important เพื่อ override */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    #player-info {
+        font-size: 1em;
+    }
+
+    #text-to-type, #practice-text-to-type {
+        font-size: 1.5em;
+    }
+}
